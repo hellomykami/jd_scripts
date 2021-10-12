@@ -39,6 +39,9 @@ let goodPageSize = $.getdata('jdUnsubscribePageSize') || 20;// 运行一次取�
 let shopPageSize = $.getdata('jdUnsubscribeShopPageSize') || 20;// 运行一次取消全部已关注的店铺。数字0表示不取关任何店铺
 let stopGoods = $.getdata('jdUnsubscribeStopGoods') || '';//遇到此商品不再进行取关，此处内容需去商品详情页（自营处）长按拷贝商品信息
 let stopShop = $.getdata('jdUnsubscribeStopShop') || '';//遇到此店铺不再进行取关，此处内容请尽量从头开始输入店铺名称
+
+stopShop += '京东京造'
+
 const JD_API_HOST = 'https://wq.jd.com/fav';
 !(async () => {
   if (!cookiesArr[0]) {
@@ -219,7 +222,7 @@ async function unsubscribeShops() {
       for (let item of followShops.data) {
         if (stopShop && (item.shopName && item.shopName.indexOf(stopShop.replace(/\s*/g, '')) > -1)) {
           console.log(`匹配到了您设定的店铺--${item.shopName}，不在进行取消关注店铺`)
-          break;
+          continue;
         }
         let res = await unsubscribeShopsFun(item.shopId);
         if (res.iRet === '0') {
